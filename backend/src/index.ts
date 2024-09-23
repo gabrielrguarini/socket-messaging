@@ -3,7 +3,9 @@ import { Server } from "socket.io";
 
 const httpServer = createServer();
 const io = new Server(httpServer, {
-    /* options */
+    cors: {
+        origin: "http://localhost:8080",
+    },
 });
 
 io.on("connection", (socket) => {
