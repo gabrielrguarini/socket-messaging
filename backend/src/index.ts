@@ -49,7 +49,8 @@ io.on("connection", (socket) => {
     });
 
     socket.on("disconnect", () => {
-        console.log(`${socket.username} disconnected`);
+        console.log(`${socket.username} socket ${socket.id} disconnected`);
+        socket.broadcast.emit("user disconnected", socket.id);
     });
 });
 httpServer.listen(PORT, () => {

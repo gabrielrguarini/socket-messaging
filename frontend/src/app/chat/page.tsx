@@ -43,10 +43,17 @@ export default function Home() {
             socket.on("user connected", (data) => {
                 setUsers((prevUsers) => [...prevUsers, data]);
             });
+            socket.on("user disconnected", (id: string) => {
+                setUsers((prevUsers) =>
+                    prevUsers.filter((user) => user.id !== id)
+                );
+            });
 
             return () => {
                 socket.off("message");
                 socket.off("users");
+                socket.off("user connected");
+                socket.off("user disconnected");
                 socket.disconnect();
             };
         }
