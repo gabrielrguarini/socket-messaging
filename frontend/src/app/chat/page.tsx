@@ -38,6 +38,8 @@ export default function Home() {
     const [inputMessage, setInputMessage] = useState("");
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const [openEmoji, setOpenEmoji] = useState(false);
+    const refInput = useRef<HTMLInputElement>(null);
+    const refEmoji = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         if (username) {
@@ -80,6 +82,21 @@ export default function Home() {
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (
+                refEmoji.current &&
+                !refEmoji.current.contains(event.target as Node)
+            ) {
+                setOpenEmoji(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () =>
+            document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
 
     if (username === null) return null;
 
@@ -190,6 +207,7 @@ export default function Home() {
                     <div className="flex space-x-2">
                         <div className="flex-1 relative flex">
                             <Input
+                                ref={refInput}
                                 placeholder="Digite sua mensagem..."
                                 value={inputMessage}
                                 onChange={(e) =>
@@ -205,14 +223,20 @@ export default function Home() {
                             />
                         </div>
 
-                        <div className="absolute -top-[450px] right-20">
+                        <div
+                            ref={refEmoji}
+                            className="absolute inset -top-[450px] sm:right-20"
+                        >
+                            {/*  */}
+
                             <EmojiPicker
                                 emojiStyle={EmojiStyle.NATIVE}
                                 onEmojiClick={(emoji) => {
                                     setInputMessage(inputMessage + emoji.emoji);
-                                    setOpenEmoji(false);
+                                    refInput.current?.focus();
                                 }}
                                 open={openEmoji}
+                                width={"100%"}
                             />
                         </div>
                         <Button onClick={sendMessage}>Send</Button>
