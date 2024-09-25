@@ -38,7 +38,9 @@ export default function ChatEntrance() {
                             <div className="flex flex-col space-y-1.5">
                                 <Input
                                     id="name"
-                                    placeholder="Your name"
+                                    placeholder="Digite seu nome"
+                                    type="text"
+                                    required
                                     value={username}
                                     onChange={(e) =>
                                         setUsername(e.target.value)
