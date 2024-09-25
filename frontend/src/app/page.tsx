@@ -27,9 +27,9 @@ export default function ChatEntrance() {
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
             <Card className="w-[350px]">
                 <CardHeader>
-                    <CardTitle>Welcome to the Chat</CardTitle>
+                    <CardTitle>Bem vindo ao chat</CardTitle>
                     <CardDescription>
-                        Enter your name to join the conversation
+                        Coloque seu nome para se juntar a conversa
                     </CardDescription>
                 </CardHeader>
                 <form onSubmit={handleSubmit}>
