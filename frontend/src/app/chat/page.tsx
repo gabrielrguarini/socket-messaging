@@ -193,7 +193,9 @@ export default function Home() {
                                     <p className="text-sm font-medium">
                                         {message.sender}
                                     </p>
-                                    <p className="text-sm">{message.content}</p>
+                                    <p className="font-light">
+                                        {message.content}
+                                    </p>
                                 </div>
                             </div>
                             <p className="text-xs text-gray-500 mt-1">
@@ -219,13 +221,15 @@ export default function Home() {
                             />
                             <SmilePlus
                                 className="absolute right-2 top-0 translate-y-[25%] text-stone-500 cursor-pointer"
-                                onClick={() => setOpenEmoji(!openEmoji)}
+                                onClick={() => {
+                                    setOpenEmoji(!openEmoji);
+                                }}
                             />
                         </div>
 
                         <div
                             ref={refEmoji}
-                            className="absolute inset -top-[450px] sm:right-20"
+                            className="absolute inset -top-[450px] sm:right-20 sm:w-[350px]"
                         >
                             {/*  */}
 
@@ -236,7 +240,7 @@ export default function Home() {
                                     refInput.current?.focus();
                                 }}
                                 open={openEmoji}
-                                width={"100%"}
+                                width={`100%`}
                             />
                         </div>
                         <Button onClick={sendMessage}>Send</Button>
