@@ -101,7 +101,9 @@ export default function Home() {
                             <AvatarFallback>{user.name[0]}</AvatarFallback>
                         </Avatar>
                         <div className="ml-4">
-                            <p className="text-sm font-medium">{user.name}</p>
+                            <p className="text-sm font-medium">
+                                {user.name === username ? "Você" : user.name}
+                            </p>
                             <p
                                 className={`text-xs ${
                                     user.status === "online"
