@@ -13,7 +13,8 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet";
-import { Menu } from "lucide-react";
+import { Menu, SmilePlus } from "lucide-react";
+import EmojiPicker, { EmojiStyle } from "emoji-picker-react";
 
 interface Message {
     id: number;
@@ -36,6 +37,7 @@ export default function Home() {
     const [users, setUsers] = useState<User[]>([]);
     const [inputMessage, setInputMessage] = useState("");
     const messagesEndRef = useRef<HTMLDivElement>(null);
+    const [openEmoji, setOpenEmoji] = useState(false);
 
     useEffect(() => {
         if (username) {
@@ -184,14 +186,35 @@ export default function Home() {
                     ))}
                     <div ref={messagesEndRef} />
                 </ScrollArea>
-                <div className="p-4 bg-white border-t">
+                <div className="p-4 bg-white border-t relative">
                     <div className="flex space-x-2">
-                        <Input
-                            placeholder="Type a message..."
-                            value={inputMessage}
-                            onChange={(e) => setInputMessage(e.target.value)}
-                            onKeyUp={(e) => e.key === "Enter" && sendMessage()}
-                        />
+                        <div className="flex-1 relative flex">
+                            <Input
+                                placeholder="Digite sua mensagem..."
+                                value={inputMessage}
+                                onChange={(e) =>
+                                    setInputMessage(e.target.value)
+                                }
+                                onKeyUp={(e) =>
+                                    e.key === "Enter" && sendMessage()
+                                }
+                            />
+                            <SmilePlus
+                                className="absolute right-2 top-0 translate-y-[25%] text-stone-500 cursor-pointer"
+                                onClick={() => setOpenEmoji(!openEmoji)}
+                            />
+                        </div>
+
+                        <div className="absolute -top-[450px] right-20">
+                            <EmojiPicker
+                                emojiStyle={EmojiStyle.NATIVE}
+                                onEmojiClick={(emoji) => {
+                                    setInputMessage(inputMessage + emoji.emoji);
+                                    setOpenEmoji(false);
+                                }}
+                                open={openEmoji}
+                            />
+                        </div>
                         <Button onClick={sendMessage}>Send</Button>
                     </div>
                 </div>
