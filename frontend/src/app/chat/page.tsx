@@ -35,13 +35,18 @@ export default function Home() {
     const [messages, setMessages] = useState<Message[]>([]);
     const [users, setUsers] = useState<User[]>([]);
     const [inputMessage, setInputMessage] = useState("");
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         if (username) {
             socket.auth = { username };
             socket.connect();
+            socket.on("session", ({ sessionID, userID, username }) => {
+                socket.auth = { sessionID };
+                localStorage.setItem("sessionID", sessionID);
+                localStorage.setItem("username", username);
+                socket.userID = userID;
+            });
 
             socket.on("message", (data) => {
                 setMessages((prevMessages) => [...prevMessages, data]);
@@ -53,6 +58,7 @@ export default function Home() {
             socket.on("user connected", (data) => {
                 setUsers((prevUsers) => [...prevUsers, data]);
             });
+
             socket.on("user disconnected", (id: string) => {
                 setUsers((prevUsers) =>
                     prevUsers.filter((user) => user.id !== id)
@@ -60,6 +66,7 @@ export default function Home() {
             });
 
             return () => {
+                socket.off("session");
                 socket.off("message");
                 socket.off("users");
                 socket.off("user connected");
@@ -91,9 +98,9 @@ export default function Home() {
     const Sidebar = () => (
         <div className="w-full bg-white">
             <ScrollArea className="h-[calc(100vh-5rem)]">
-                {users.map((user) => (
+                {users.map((user, index) => (
                     <div
-                        key={user.id}
+                        key={index}
                         className="flex items-center p-4 hover:bg-gray-100"
                     >
                         <Avatar className="h-10 w-10">

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
@@ -22,7 +22,12 @@ export default function ChatEntrance() {
             router.push(`/chat?username=${encodeURIComponent(username)}`);
         }
     };
-
+    useEffect(() => {
+        const username = localStorage.getItem("username");
+        if (username) {
+            router.push(`/chat?username=${encodeURIComponent(username)}`);
+        }
+    }, []);
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
             <Card className="w-[350px]">
